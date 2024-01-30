@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Task = require('../model/model');
 const JobData = require('../model/jobModel');
-
+const Qndata = require('../model/qnModel');
 // List all tasks
 router.get('/tasks', async (req, res) => {
   try {
@@ -25,6 +25,21 @@ router.post('/jobdata', async (req, res) => {
   const jobdata = new JobData({ applyNow,companyImg,companyName,description, responsibilities,qualification,role,location,experience,salary,batch,telegram,whatsapp });
   await jobdata.save();
   res.json(jobdata);
+});
+
+router.get('/qndata', async (req, res) => {
+  try {
+    const qndata = await Qndata.find();
+    res.json(qndata);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+router.post('/qndata', async (req, res) => {
+  const {quation, ans, qnImg } = req.body;
+  const qndata = new Qndata({quation, ans, qnImg });
+  await qndata.save();
+  res.json(qndata);
 });
 
 // Create a new task
